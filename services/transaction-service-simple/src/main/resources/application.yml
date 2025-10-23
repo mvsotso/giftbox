@@ -1,0 +1,10 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: transaction-service-simple
+
+logging:
+  level:
+    com.giftbox: DEBUG
