@@ -1,0 +1,857 @@
+{
+	"info": {
+		"_postman_id": "giftbox-apisix-collection",
+		"name": "Gift Box APISIX API Gateway Tests",
+		"description": "Comprehensive test collection for Gift Box backend system through APISIX API Gateway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "giftbox-apisix"
+	},
+	"item": [
+		{
+			"name": "Health Checks",
+			"item": [
+				{
+					"name": "APISIX Gateway Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check if APISIX gateway is healthy and routing requests"
+					},
+					"response": []
+				},
+				{
+					"name": "Test Service Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check test service health through APISIX gateway"
+					},
+					"response": []
+				},
+				{
+					"name": "APISIX Admin API Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apisix_admin_url}}/apisix/admin/routes",
+							"host": [
+								"{{apisix_admin_url}}"
+							],
+							"path": [
+								"apisix",
+								"admin",
+								"routes"
+							]
+						},
+						"description": "Check APISIX admin API to verify routes are configured"
+					},
+					"response": []
+				}
+			],
+			"description": "Health check endpoints for system monitoring"
+		},
+		{
+			"name": "User Service",
+			"item": [
+				{
+					"name": "User Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"register"
+							]
+						},
+						"description": "Register a new user through APISIX gateway"
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"testuser\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"login"
+							]
+						},
+						"description": "Login user and get JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Get user profile with authentication"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Updated\",\n  \"lastName\": \"User\",\n  \"email\": \"updated@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users",
+								"profile"
+							]
+						},
+						"description": "Update user profile information"
+					},
+					"response": []
+				}
+			],
+			"description": "User service endpoints for authentication and profile management"
+		},
+		{
+			"name": "Merchant Service",
+			"item": [
+				{
+					"name": "Merchant Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"businessName\": \"Test Store\",\n  \"businessType\": \"Retail\",\n  \"contactPerson\": \"John Doe\",\n  \"email\": \"merchant@example.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"123 Main St\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"zipCode\": \"10001\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/merchants/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"merchants",
+								"register"
+							]
+						},
+						"description": "Register a new merchant"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Merchants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/merchants",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"merchants"
+							]
+						},
+						"description": "Get list of all merchants"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchant by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/merchants/{{merchant_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"merchants",
+								"{{merchant_id}}"
+							]
+						},
+						"description": "Get specific merchant details"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Merchant",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"businessName\": \"Updated Store Name\",\n  \"phone\": \"+1234567891\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/merchants/{{merchant_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"merchants",
+								"{{merchant_id}}"
+							]
+						},
+						"description": "Update merchant information"
+					},
+					"response": []
+				}
+			],
+			"description": "Merchant service endpoints for business management"
+		},
+		{
+			"name": "Voucher Service",
+			"item": [
+				{
+					"name": "Create Voucher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchantId\": {{merchant_id}},\n  \"amount\": 50.00,\n  \"currency\": \"USD\",\n  \"expiryDate\": \"2025-12-31T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/vouchers",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vouchers"
+							]
+						},
+						"description": "Create a new gift voucher"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Vouchers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/vouchers/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vouchers",
+								"user"
+							]
+						},
+						"description": "Get vouchers for authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Voucher by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/vouchers/{{voucher_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vouchers",
+								"{{voucher_id}}"
+							]
+						},
+						"description": "Get specific voucher details"
+					},
+					"response": []
+				},
+				{
+					"name": "Redeem Voucher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"voucherCode\": \"{{voucher_code}}\",\n  \"merchantId\": {{merchant_id}}\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/vouchers/redeem",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"vouchers",
+								"redeem"
+							]
+						},
+						"description": "Redeem a voucher at a merchant"
+					},
+					"response": []
+				}
+			],
+			"description": "Voucher service endpoints for gift card management"
+		},
+		{
+			"name": "Transaction Service",
+			"item": [
+				{
+					"name": "Create Transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchantId\": {{merchant_id}},\n  \"voucherId\": {{voucher_id}},\n  \"amount\": 25.00,\n  \"currency\": \"USD\",\n  \"transactionType\": \"PURCHASE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/transactions",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transactions"
+							]
+						},
+						"description": "Create a new transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Transactions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/transactions/user",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"user"
+							]
+						},
+						"description": "Get transaction history for user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Transaction by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/transactions/{{transaction_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"{{transaction_id}}"
+							]
+						},
+						"description": "Get specific transaction details"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Merchant Transactions",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/transactions/merchant/{{merchant_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"transactions",
+								"merchant",
+								"{{merchant_id}}"
+							]
+						},
+						"description": "Get transactions for specific merchant"
+					},
+					"response": []
+				}
+			],
+			"description": "Transaction service endpoints for payment processing"
+		},
+		{
+			"name": "Payment Service",
+			"item": [
+				{
+					"name": "Process Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transactionId\": \"{{transaction_id}}\",\n  \"amount\": 25.00,\n  \"currency\": \"USD\",\n  \"paymentMethod\": \"CREDIT_CARD\",\n  \"cardNumber\": \"4111111111111111\",\n  \"expiryDate\": \"12/25\",\n  \"cvv\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/process",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"process"
+							]
+						},
+						"description": "Process a payment for a transaction"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/{{payment_id}}/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"{{payment_id}}",
+								"status"
+							]
+						},
+						"description": "Check payment status"
+					},
+					"response": []
+				},
+				{
+					"name": "Refund Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"paymentId\": \"{{payment_id}}\",\n  \"amount\": 25.00,\n  \"reason\": \"Customer request\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/payments/refund",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"refund"
+							]
+						},
+						"description": "Process a refund for a payment"
+					},
+					"response": []
+				}
+			],
+			"description": "Payment service endpoints for payment processing"
+		},
+		{
+			"name": "Corporate Service",
+			"item": [
+				{
+					"name": "Corporate Registration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"companyName\": \"Test Corporation\",\n  \"contactPerson\": \"Jane Smith\",\n  \"email\": \"corporate@example.com\",\n  \"phone\": \"+1234567890\",\n  \"address\": \"456 Corporate Ave\",\n  \"city\": \"New York\",\n  \"state\": \"NY\",\n  \"zipCode\": \"10001\",\n  \"businessType\": \"CORPORATE\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/corporate/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"corporate",
+								"register"
+							]
+						},
+						"description": "Register a new corporate account"
+					},
+					"response": []
+				},
+				{
+					"name": "Bulk Voucher Creation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{corporate_auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"merchantId\": {{merchant_id}},\n  \"amount\": 100.00,\n  \"currency\": \"USD\",\n  \"quantity\": 10,\n  \"expiryDate\": \"2025-12-31T23:59:59Z\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/v1/corporate/vouchers/bulk",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"corporate",
+								"vouchers",
+								"bulk"
+							]
+						},
+						"description": "Create multiple vouchers in bulk"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Corporate Analytics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{corporate_auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/v1/corporate/analytics?startDate=2024-01-01&endDate=2024-12-31",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"corporate",
+								"analytics"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-01-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-12-31"
+								}
+							]
+						},
+						"description": "Get corporate analytics and reporting data"
+					},
+					"response": []
+				}
+			],
+			"description": "Corporate service endpoints for enterprise features"
+		},
+		{
+			"name": "Load Testing",
+			"item": [
+				{
+					"name": "Concurrent Health Checks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Load test health endpoint with multiple concurrent requests"
+					},
+					"response": []
+				},
+				{
+					"name": "Rate Limit Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/v1/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"users"
+							]
+						},
+						"description": "Test rate limiting by making multiple rapid requests"
+					},
+					"response": []
+				}
+			],
+			"description": "Load testing endpoints for performance validation"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set timestamp for request tracking",
+					"pm.globals.set('timestamp', new Date().toISOString());",
+					"",
+					"// Log request details",
+					"console.log('Request URL:', pm.request.url.toString());",
+					"console.log('Request Method:', pm.request.method);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Basic response validation",
+					"pm.test('Response time is less than 5000ms', function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(5000);",
+					"});",
+					"",
+					"// Status code validation",
+					"pm.test('Status code is not 500', function () {",
+					"    pm.expect(pm.response.code).to.not.equal(500);",
+					"});",
+					"",
+					"// Response time logging",
+					"console.log('Response time:', pm.response.responseTime + 'ms');",
+					"console.log('Status code:', pm.response.code);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:9080",
+			"type": "string"
+		},
+		{
+			"key": "apisix_admin_url",
+			"value": "http://localhost:9180",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "corporate_auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "merchant_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "voucher_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "transaction_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "payment_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "voucher_code",
+			"value": "VOUCHER123",
+			"type": "string"
+		}
+	]
+}
