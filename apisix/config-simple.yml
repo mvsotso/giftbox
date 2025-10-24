@@ -1,0 +1,58 @@
+# Simple APISIX configuration for standalone mode
+apisix:
+  node_listen: 9080
+  admin_listen: 9180
+  enable_admin: true
+  enable_control: true
+  log_level: info
+  plugins:
+    - limit-req
+    - cors
+  plugin_attr:
+    limit-req:
+      burst: 5
+      rate: 10
+      key: remote_addr
+    cors:
+      allow_origins: "*"
+      allow_methods: "GET,POST,PUT,DELETE,OPTIONS"
+      allow_headers: "*"
+      expose_headers: "*"
+      max_age: 1728000
+
+nginx_config:
+  error_log: "/dev/stderr"
+  error_log_level: "warn"
+  worker_processes: "auto"
+  worker_rlimit_nofile: 20480
+  event:
+    worker_connections: 10620
+    multi_accept: "on"
+  http:
+    access_log: "/dev/stdout"
+    keepalive_timeout: 60s
+    client_max_body_size: 1m
+    lua_package_path: "/usr/local/apisix/?.lua;/usr/local/apisix/?/init.lua;;"
+    lua_package_cpath: "/usr/local/apisix/?.so;;"
+    lua_shared_dict:
+      prometheus_metrics: 1m
+      plugin-limit-conn: 10m
+      plugin-limit-count: 10m
+      plugin-limit-req: 10m
+      ip-restriction: 1m
+      upstream-healthcheck: 1m
+      worker-events: 1m
+    upstream:
+      keepalive_pool:
+        size: 320
+        idle_timeout: 60s
+    upstream_keepalive_requests: 1000
+    upstream_keepalive_timeout: 60s
+    server:
+      listen: 9080
+      server_name: _;
+      location:
+        "~ ^/apisix/":
+          content_by_lua_block: "require('apisix').http_access_phase() require('apisix').http_header_filter_phase() require('apisix').http_body_filter_phase() require('apisix').http_log_phase()"
+        "/":
+          content_by_lua_block: "require('apisix').http_access_phase() require('apisix').http_header_filter_phase() require('apisix').http_body_filter_phase() require('apisix').http_log_phase()"
