@@ -69,6 +69,41 @@ services:
       timeout: 5s
       retries: 5
 
+  # ETCD for APISIX
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.9
+    container_name: giftbox-etcd
+    environment:
+      ETCD_ENABLE_V2: "true"
+      ALLOW_NONE_AUTHENTICATION: "yes"
+      ETCD_ADVERTISE_CLIENT_URLS: "http://etcd:2379"
+      ETCD_LISTEN_CLIENT_URLS: "http://0.0.0.0:2379"
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Nginx API Gateway
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: giftbox-nginx-gateway
+    ports:
+      - "9080:9080"  # Gateway
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - postgres
+      - redis
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # User Service
   user-service:
     build:
