@@ -1,0 +1,9 @@
+{
+  "uri": "/health",
+  "upstream": {
+    "type": "roundrobin",
+    "nodes": {
+      "test-service:8080": 1
+    }
+  }
+}

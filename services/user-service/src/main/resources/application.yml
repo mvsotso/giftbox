@@ -11,8 +11,8 @@ spring:
   # Database Configuration
   datasource:
     url: jdbc:postgresql://localhost:5432/giftbox_user
-    username: postgres
-    password: abc123ABC!@#
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:secure_password_change_me}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 20
@@ -60,9 +60,9 @@ spring:
 
 # JWT Configuration
 jwt:
-  secret: giftbox-secret-key-that-should-be-changed-in-production
-  access-token-validity: 3600  # 1 hour
-  refresh-token-validity: 86400  # 24 hours
+  secret: ${JWT_SECRET:secure_jwt_secret_change_me}
+  access-token-validity: ${JWT_ACCESS_VALIDITY:3600}  # 1 hour
+  refresh-token-validity: ${JWT_REFRESH_VALIDITY:86400}  # 24 hours
 
 # Security Configuration
 security:
@@ -74,10 +74,10 @@ security:
 # Logging Configuration
 logging:
   level:
-    com.giftbox.userservice: INFO
-    org.springframework.security: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    com.giftbox.userservice: ${LOG_LEVEL:INFO}
+    org.springframework.security: ${SECURITY_LOG_LEVEL:WARN}
+    org.hibernate.SQL: ${SQL_LOG_LEVEL:WARN}
+    org.hibernate.type.descriptor.sql.BasicBinder: ${SQL_BINDER_LOG_LEVEL:WARN}
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

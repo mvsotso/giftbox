@@ -1,0 +1,13 @@
+routes:
+  - id: 1
+    uri: /health
+    upstream:
+      type: roundrobin
+      nodes:
+        "test-service:8080": 1
+  - id: 2
+    uri: /
+    upstream:
+      type: roundrobin
+      nodes:
+        "test-service:8080": 1
